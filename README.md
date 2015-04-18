@@ -1,7 +1,7 @@
 # Dooley_CSCI2270_FinalProject
 
 Project Summary
-	This program will compare the runtime for many sorting algorithms on a user entered set of integer values. The program will prompt the user for some data then the user will be presented with a manu so they can choose to run a single algorithm and get the runtime or to run them all and compare the runtimetime. Included sorting algorithms:
+	This program will compare the runtime for many sorting algorithms on a user entered set of integer values. The program will prompt the user for some data then the user will be presented with a menu so they can choose to run a single algorithm and get the runtime or to run them all and compare the runtime. Included sorting algorithms:
 		1. Insertion sort
 		2. Selection sort
 		3. Merge sort
