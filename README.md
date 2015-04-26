@@ -1,4 +1,4 @@
-# Dooley_CSCI2270_FinalProject
+#Dooley_CSCI2270_FinalProject
 
 Project Summary
 	This program will compare the runtime for many sorting algorithms on a user entered set of integer values. The program will prompt the user for some data then the user will be presented with a menu so they can choose to run a single algorithm and get the runtime or to run them all and compare the runtime. Included sorting algorithms:
@@ -19,6 +19,7 @@ How to Run
 Dependencies
 
 System Requirements
+	Program should work on OSX, Linux and Windows.
 
 Group Members
 	Jennifer Dooley
