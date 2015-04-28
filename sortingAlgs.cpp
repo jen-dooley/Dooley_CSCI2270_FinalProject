@@ -1,13 +1,42 @@
-#include <chrono>
+#include <sys/time.h>
 #include <iostream>
 #include <vector>
 #include "sortingAlgs.h"
 using namespace std;
 
-milliseconds SortingAlgorithms::insertion(){
-	auto start = chrono::high_resolution_clock::now();
+SortingAlgorithms::SortingAlgorithms(){
+	//generate the random sized array of random numbers
+	getInput();
+	root = NULL;
+}
+
+void SortingAlgorithms::getInput(){
+	//make size a random number from 20 to 1000
+	inputSize = rand()%1000+20;
+	cout<<"\nRunning comparison on "<<inputSize<<" random elements\n";
+	for(int i=inputSize; i>0; i--){
+		//fill the array with random numbers from 0 to 999
+		origional.push_back(rand()%1000);
+	}
+}
+
+SortingAlgorithms::~SortingAlgorithms(){}
+
+//Function used to return the time to the precision of microseconds
+double SortingAlgorithms::getTime()
+{
+    struct timeval t;
+    gettimeofday(&t, NULL);
+    double d = t.tv_sec + (double) t.tv_usec;
+    return d;
+}
+
+void SortingAlgorithms::insertion(){
+	double start = getTime();
+
 	int index,j;
-	int *array = &origional;
+	int *array = &origional[0];
+
     for(int i = 1; i < inputSize; i++){
         index = array[i];
         j = i;
@@ -17,19 +46,22 @@ milliseconds SortingAlgorithms::insertion(){
         }
         array[j] = index;
     }
-    auto finish = chrono::high_resolution_clock::now();
+    double finish = getTime();
 
-	return chrono::duration_cast<std::chrono::milliseconds>(start - finish).count();
+	double dif = finish-start;
+	cout<<"\tInsertion Sort: "<<dif<<endl;
 }
 
-milliseconds SortingAlgorithms::selection(){
-	auto start = chrono::high_resolution_clock::now();
+void SortingAlgorithms::selection(){
+	double start = getTime();
+
 	int minIndex;
     int temp;
-    int *array = &origional;
+    int *array = &origional[0];
+
     for(int i = 0; i < inputSize - 1; i++){
         minIndex = i;
-        for(int j = i + 1; j < n; j++){
+        for(int j = i + 1; j < inputSize; j++){
             if(array[j] < array[minIndex])
                 minIndex = j;
         }
@@ -39,68 +71,73 @@ milliseconds SortingAlgorithms::selection(){
             array[minIndex] = temp;
         }
     }
-    auto finish = chrono::high_resolution_clock::now();
+    double finish = getTime();
 
-    return chrono::duration_cast<std::chrono::milliseconds>(start - finish).count();
+    double dif = finish-start;
+    cout<<"\tSelection Sort: "<<dif<<endl;
 }
 
-//This function intentionally left empty to be implemented by others
-milliseconds SortingAlgorithms::merge(){
-	auto start = chrono::high_resolution_clock::now();
+//This function intentionally left empty to be contributed to by others
+void SortingAlgorithms::merge(){
+	double start = getTime();
 
 	//Code goes here 
 
-	auto finish = chrono::high_resolution_clock::now();
+	double finish = getTime();
 
-	return chrono::duration_cast<std::chrono::milliseconds>(start - finish).count();
+	double dif = finish-start;
+	cout<<"\tMerge Sort: "<<dif<<endl;
 }
 
-milliseconds SortingAlgorithms::heap(){
-	auto start = chrono::high_resolution_clock::now();
-	int *array = &origional;
-	int end = inputSize-1;
-	heapToHeap(array);
-	while(end>0){
-		swap(array[0], array[end]);
-		heapShiftDown(array, 0, end);
-		--end;
+void SortingAlgorithms::heap(){
+	double start = getTime();
+
+	int *array = &origional[0];
+
+	for(int i = inputSize-1; i > 0; i--){
+		int iValue = array[i];
+		array[i] = array[0];
+		array[0] = iValue;
+		heapToHeap(array, i);
 	}
-	auto finish = chrono::high_resolution_clock::now();
-
-	return chrono::duration_cast<std::chrono::milliseconds>(start - finish).count();
+	double finish = getTime();
+	double dif = finish - start;
+	cout<<"\tHeap Sort: "<<dif<<endl;
 }
 
-void SortingAlgorithms::heapShiftDown(int heap[], int i, int max){
-	int iBig, c1, c2;
-	while(i < max){
-		iBig = i;
-		c1 = (2*i) + 1;
-		c2 = c1 + 1;
-		if(c1<max && heap[c1]>heap[iBig])
-			iBig = c1;
-		if(c2<max && heap[c2]>heap[iBig])
-			iBig = c2;
-		if(iBig == c2) 
-			return;
-		swap(heap[i], heap[iBig]);
-		i = iBig;
-	}
-}
-
-void SortingAlgorithms::heapToHeap(int array[]){
-	int i = (array.size()/2)-1;
-	while(i>=0){
-		heapShiftDown(array, i, array.size());
-		--i;
+//function creats a heap
+void SortingAlgorithms::heapToHeap(int array[], int size){
+	for(int i = 1; i < size; i++){
+		int val = array[i];
+		int s = i;
+		int f = (s-1)/2;
+		while(s>0 && array[f] < val){
+			array[s] = array[f];
+			s = f;
+			f = (s-1)/2;
+		}
+		array[s] = val;
 	}
 }
 
-milliseconds SortingAlgorithms::quick(int array[], int left, int right){
-	auto start = chrono::high_resolution_clock::now();
+void SortingAlgorithms::quickCall(){
+	double start = getTime();
+
+	//Calls the recursive function for quick sort
+	quick(&origional[0], 0, inputSize);
+
+	double finish = getTime();
+
+	double dif = finish-start;
+	cout<<"\tQuick Sort: "<<dif<<endl;
+}
+
+void SortingAlgorithms::quick(int array[], int left, int right){
 	int i = left;
 	int j = right;
 	int temp;
 	int pivot = array[(left + right) / 2];
+	
 	while(i <= j){ 
 	  	while(array[i] < pivot)
 	       i++;
@@ -115,19 +152,16 @@ milliseconds SortingAlgorithms::quick(int array[], int left, int right){
 	  }
 	}
 	if (left < j)
-		quickSort(array, left, j);
+		quick(array, left, j);
 	if (i < right)
-		quickSort(array, i, right);
-	auto finish = chrono::high_resolution_clock::now();
-
-	return chrono::duration_cast<std::chrono::milliseconds>(start - finish).count();
+		quick(array, i, right);
 }
 
-milliseconds SortingAlgorithms::bubble(){
-	auto start = chrono::high_resolution_clock::now();
+void SortingAlgorithms::bubble(){
+	double start = getTime();
 	int swap;
-	int *array = &origional
-    for(int i = 0; i < n - 1; i++){
+	int *array = &origional[0];
+    for(int i = 0; i < inputSize - 1; i++){
         for(int j = 0; j < inputSize - i - 1; j++){
             if(array[j] > array[j+1]){
                 swap = array[j];
@@ -136,37 +170,37 @@ milliseconds SortingAlgorithms::bubble(){
             }
         }
     }
-    auto finish = chrono::high_resolution_clock::now();
+    double finish = getTime();
 
-    return chrono::duration_cast<std::chrono::milliseconds>(start - finish).count();
+    double dif = finish-start;
+    cout<<"\tBubble Sort: "<<dif<<endl;
 }
 
-milliseconds SortingAlgorithms::tree(){
-	auto start = chrono::high_resolution_clock::now();
-	int *array = &origional;
-	vector done<int>;
-	treeNode *root;
+void SortingAlgorithms::tree(){
+	double start = getTime();
+	int *array = &origional[0];
+	vector<int> done;
 	for(int i=0; i<inputSize; i++)
 		treeAddNode(array[i]);
-
 	treeTraverse(root, done);
-	auto finish = chrono::high_resolution_clock::now();
+	double finish = getTime();
 
-	return chrono::duration_cast<std::chrono::milliseconds>(start - finish).count();
+	double dif = finish-start;
+	cout<<"\tTree Sort: "<<dif<<endl;
 }
 
-void SortingAlgorithms::treeAddNode(int data){
+void SortingAlgorithms::treeAddNode(int num){
 	treeNode *node = new treeNode;
-	node->data = data;
+	node->data = num;
+	node->right = NULL;
+	node->left = NULL;
     
-    if(root == NULL)
-    {
+    if(root == NULL){
         root = node;
     }
     else{
-        treeNode *parentNode = new treeNode;
-        treeNode *currentNode = new treeNode;
-        currentNode = root;
+        treeNode *currentNode = root;
+        treeNode *parentNode = NULL;
 
         while(currentNode != NULL){
             parentNode = currentNode;
@@ -187,11 +221,45 @@ void SortingAlgorithms::treeAddNode(int data){
     }
 }
 
-void SortingAlgorithms::treeTraverse(treeNode *node, vector done<int>){
+void SortingAlgorithms::treeTraverse(treeNode *node, vector<int> done){
 	if(node->left != NULL)
-        treeTraverse(node->left);
-    done.push_back(node->data, done);
+        treeTraverse(node->left, done);
+    done.push_back(node->data);
     if(node->right != NULL)
-        treeTraverse(node->right);
+        treeTraverse(node->right, done);
 }
 
+void SortingAlgorithms::shell(){
+	double start = getTime();
+	int *array = &origional[0];
+	int temp;
+
+	for(int i = inputSize/2; i>0; i /= 2){
+		for(int j = i; j<inputSize;j++){
+			temp = array[j];
+			for(int k = j; k >= i; k -= i){
+				if(temp < array[k-1])
+					array[k] = array[k-i];
+				else
+					break;
+			}
+			array[j] = temp;
+		}
+	}
+	double finish = getTime();
+
+	double dif = finish-start;
+	cout<<"\tShell Sort: "<<dif<<endl;
+}
+
+void SortingAlgorithms::compareSorts(){
+	cout<<"Runtime results for sorting input in microseconds:\n";
+	insertion();
+	selection();
+	//merge();
+	heap();
+	quickCall();
+	bubble();
+	tree();
+	shell();
+}
