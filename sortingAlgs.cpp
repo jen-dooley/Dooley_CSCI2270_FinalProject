@@ -4,16 +4,16 @@
 #include "sortingAlgs.h"
 using namespace std;
 
-SortingAlgorithms::SortingAlgorithms(){
+SortingAlgorithms::SortingAlgorithms(int arraySize){
 	//generate the random sized array of random numbers
-	getInput();
+	getInput(arraySize);
 	root = NULL;
 }
 
-void SortingAlgorithms::getInput(){
+void SortingAlgorithms::getInput(int arraySize){
 	//make size a random number from 20 to 1000
-	inputSize = rand()%1000+20;
-	cout<<"\nRunning comparison on "<<inputSize<<" random elements\n";
+	inputSize = arraySize;
+	cout<<"\nRunning comparison on "<<inputSize<<" elements\n";
 	for(int i=inputSize; i>0; i--){
 		//fill the array with random numbers from 0 to 999
 		origional.push_back(rand()%1000);
@@ -81,7 +81,7 @@ void SortingAlgorithms::selection(){
 void SortingAlgorithms::merge(){
 	double start = getTime();
 
-	//Code goes here 
+	//Code goes here
 
 	double finish = getTime();
 
@@ -137,8 +137,8 @@ void SortingAlgorithms::quick(int array[], int left, int right){
 	int j = right;
 	int temp;
 	int pivot = array[(left + right) / 2];
-	
-	while(i <= j){ 
+
+	while(i <= j){
 	  	while(array[i] < pivot)
 	       i++;
 	  	while(array[j] > pivot)
@@ -194,7 +194,7 @@ void SortingAlgorithms::treeAddNode(int num){
 	node->data = num;
 	node->right = NULL;
 	node->left = NULL;
-    
+
     if(root == NULL){
         root = node;
     }

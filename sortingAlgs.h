@@ -11,12 +11,12 @@ struct treeNode{
 
 class SortingAlgorithms{
 public:
-	SortingAlgorithms();
+	SortingAlgorithms(int arraySize);
 		//Basic constructor, this calls getInput()
 	~SortingAlgorithms();
 		//Basic destructor
 
-	void getInput();
+	void getInput(int arraySize);
 		//Asks user for input
 
 	void insertion();
@@ -43,16 +43,16 @@ public:
 		//sorts so that values greater than the pivot are on the right and less than are on the left
 		//then recursively repeats this process on each subarray.
 	void bubble();
-		//Bubble sort is one of the slowest sorts, 
+		//Bubble sort is one of the slowest sorts,
 		//it iterates through the list, compares and swaps consecutive elements
 		//which moves the next lowest number in the array to the front.
 	void tree();
-		//Tree sort places all items into a binary tree then does a 
-		//in-order traversal and saves these values 
+		//Tree sort places all items into a binary tree then does a
+		//in-order traversal and saves these values
 	void shell();
 		//A form of insertion sort that compares items that are far apart,
 		//Starts with small subarrays then moves to larger ones that are nearly sorted
-	
+
 	void compareSorts();
 		//Calls all sorting algorithms and prints runtimes
 
@@ -61,7 +61,7 @@ private:
 	int inputSize;
 	treeNode *root;
 		//used in tree sort
-	
+
 	double getTime();
 		//gets the time
 	//Helper Function fo Quick Sort
