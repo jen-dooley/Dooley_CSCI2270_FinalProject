@@ -13,6 +13,7 @@ SortingAlgorithms::SortingAlgorithms(int arraySize){
 void SortingAlgorithms::getInput(int arraySize){
 	//make size a random number from 20 to 1000
 	inputSize = arraySize;
+	srand(time(NULL));
 	cout<<"\nRunning comparison on "<<inputSize<<" elements\n";
 	for(int i=inputSize; i>0; i--){
 		//fill the array with random numbers from 0 to 999
@@ -80,13 +81,69 @@ void SortingAlgorithms::selection(){
 //This function intentionally left empty to be contributed to by others
 void SortingAlgorithms::merge(){
 	double start = getTime();
-
+	
+	vector<int> vec = origional;
+	vector<int> comp=merge_sort(vec);
 	//Code goes here
 
 	double finish = getTime();
 
 	double dif = finish-start;
 	cout<<"\tMerge Sort: "<<dif<<endl;
+}
+
+vector<int> SortingAlgorithms::merge_sort(vector<int>& vec){
+
+    if(vec.size() == 1)
+    {
+        return vec;
+    }
+
+
+    std::vector<int>::iterator middle = vec.begin() + (vec.size() / 2);
+
+    vector<int> left(vec.begin(), middle);
+    vector<int> right(middle, vec.end());
+
+    left = merge_sort(left);
+    right = merge_sort(right);
+
+    return mergeRecurs(vec,left, right);
+}
+
+vector<int> SortingAlgorithms::mergeRecurs(vector<int> &vec,const vector<int>& left, const vector<int>& right){
+
+    vector<int> result;
+    unsigned left_int = 0, right_int = 0;
+
+    while(left_int < left.size() && right_int < right.size())
+    {
+        if(left[left_int] < right[right_int])
+        {
+            result.push_back(left[left_int]);
+            left_int++;
+        }
+        else
+        {
+            result.push_back(right[right_int]);
+            right_int++;
+        }
+    }
+
+    while(left_int < left.size())
+    {
+        result.push_back(left[left_int]);
+        left_int++;
+    }
+
+    while(right_int < right.size())
+    {
+        result.push_back(right[right_int]);
+        right_int++;
+    }
+
+	vec = result;
+	return vec;
 }
 
 void SortingAlgorithms::heap(){
@@ -256,7 +313,7 @@ void SortingAlgorithms::compareSorts(){
 	cout<<"Runtime results for sorting input in microseconds:\n";
 	insertion();
 	selection();
-	//merge();
+	merge();
 	heap();
 	quickCall();
 	bubble();

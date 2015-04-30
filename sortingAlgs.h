@@ -69,6 +69,10 @@ private:
 
 	//Helper Function for Heap Sort
 	void heapToHeap(int array[], int size);
+	
+	//Helper function to merge
+	vector<int> mergeRecurs(vector<int>&, const vector<int>&, const vector<int>&);
+    	vector<int> merge_sort(vector<int>&);
 
 	//Helper Functions for Tree Sort
 	void treeAddNode(int data);
