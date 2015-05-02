@@ -52,7 +52,10 @@ public:
 	void shell();
 		//A form of insertion sort that compares items that are far apart,
 		//Starts with small subarrays then moves to larger ones that are nearly sorted
-
+	void gnome();
+		//Similar to Bubble sort it's a slower sort with complexity n^2
+		//it checks integer pairs and moves the lower number if it's not in order
+		//untill it is placed correctly
 	void compareSorts();
 		//Calls all sorting algorithms and prints runtimes
 

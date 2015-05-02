@@ -309,6 +309,36 @@ void SortingAlgorithms::shell(){
 	cout<<"\tShell Sort: "<<dif<<endl;
 }
 
+void SortingAlgorithms::gnome()
+{
+	double start = getTime();
+	int *array = &origional[0];
+
+	//declare values
+	int place = 1;
+	int temp;
+	while (place < inputSize)
+	{
+		if (array[place] >= array[place-1]) //compare index to previous index
+        {
+            place = place +1; //ignore if it's already ordered
+        }
+        else //Swap the values in the array
+        {
+            temp = array[place];
+            array[place] = array[place -1];
+            array[place-1] = temp;
+            
+            //bring place down 1 to make sure it goes all the way down
+            place -=1; 
+        }
+	}
+
+	double finish = getTime();
+	double dif = finish - start;
+	cout<<"\tGnome Sort: "<<dif<<endl;
+}
+
 void SortingAlgorithms::compareSorts(){
 	cout<<"Runtime results for sorting input in microseconds:\n";
 	insertion();
@@ -319,4 +349,5 @@ void SortingAlgorithms::compareSorts(){
 	bubble();
 	tree();
 	shell();
+	gnome();
 }
